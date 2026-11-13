@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Les plus empruntés — BiblioTech{% endblock %}
+
+{% block body %}
+<main class="conteneur">
+    <h1>Les plus empruntés</h1>
+
+    <div class="grille">
+        {% for livre in livres %}
+            <div class="carte">
+                <div class="carte-couverture">
+                    <img src="{{ livre.image }}" alt="Couverture de {{ livre.titre }}">
+                </div>
+                <div class="carte-infos">
+                    <h2 class="carte-titre">{{ livre.titre }}</h2>
+                    <p class="carte-auteur">{{ livre.auteur }}</p>
+                    <p class="carte-genre">{{ livre.genre }}</p>
+                    <div class="carte-bas">
+                        <span class="badge-emprunts">{{ livre.nombreEmprunts }} emprunts</span>
+                        {% if livre.estDisponible() %}
+                            <span class="badge-disponible">Disponible</span>
+                        {% else %}
+                            <span class="badge-indisponible">Indisponible</span>
+                        {% endif %}
+                        <a href="{{ path('app_livre', {id: livre.id}) }}" class="btn-voir">Voir</a>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</main>
+{% endblock %}

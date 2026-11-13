@@ -10,15 +10,25 @@
         {% block javascripts %}
             {% block importmap %}{{ importmap('app') }}{% endblock %}
         {% endblock %}
-
-        {% set frankenphp_hot_reload = app.request.server.get('FRANKENPHP_HOT_RELOAD') %}
-        {% if frankenphp_hot_reload %}
-        <meta name="frankenphp-hot-reload:url" content="{{ frankenphp_hot_reload }}">
-        <script src="https://cdn.jsdelivr.net/npm/idiomorph"></script>
-        <script src="https://cdn.jsdelivr.net/npm/frankenphp-hot-reload/+esm" type="module"></script>
-        {% endif %}
     </head>
     <body>
+        <header class="entete">
+            <div class="conteneur entete-contenu">
+                <a href="{{ path('app_catalogue') }}" class="logo">Biblio<span>Tech</span></a>
+                <nav class="menu">
+                    <a href="{{ path('app_catalogue') }}" class="{{ app.current_route == 'app_catalogue' ? 'actif' }}">Catalogue</a>
+                    <a href="{{ path('app_populaires') }}" class="{{ app.current_route == 'app_populaires' ? 'actif' }}">Les plus empruntés</a>
+                </nav>
+            </div>
+        </header>
+
         {% block body %}{% endblock %}
+
+        <footer class="pied">
+            <div class="conteneur pied-contenu">
+                <span>BiblioTech — médiathèque de quartier</span>
+                <span>Prêt de 3 semaines, renouvelable une fois</span>
+            </div>
+        </footer>
     </body>
 </html>

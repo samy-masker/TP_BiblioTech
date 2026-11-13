@@ -1,0 +1,68 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Catalogue — BiblioTech{% endblock %}
+
+{% block body %}
+<main class="conteneur">
+    <div class="catalogue-entete">
+        <h1>Catalogue</h1>
+
+        <form method="get" action="{{ path('app_catalogue') }}" class="filtres">
+            <select name="genre" onchange="this.form.submit()">
+                <option value="">Tous les genres</option>
+                {% for g in genres %}
+                    <option value="{{ g }}" {% if filtres.genre == g %}selected{% endif %}>
+                        {{ g }}
+                    </option>
+                {% endfor %}
+            </select>
+
+            <select name="auteur" onchange="this.form.submit()">
+                <option value="">Tous les auteurs</option>
+                {% for a in auteurs %}
+                    <option value="{{ a }}" {% if filtres.auteur == a %}selected{% endif %}>
+                        {{ a }}
+                    </option>
+                {% endfor %}
+            </select>
+
+            <select name="tri" onchange="this.form.submit()">
+                <option value="">Trier par titre</option>
+                <option value="annee_desc" {% if filtres.tri == 'annee_desc' %}selected{% endif %}>
+                    Année (récent → ancien)
+                </option>
+                <option value="annee_asc" {% if filtres.tri == 'annee_asc' %}selected{% endif %}>
+                    Année (ancien → récent)
+                </option>
+            </select>
+
+            <button type="submit">Filtrer</button>
+        </form>
+    </div>
+
+    <div class="grille">
+        {% for livre in livres %}
+            <div class="carte">
+                <div class="carte-couverture">
+                    <img src="{{ livre.image }}" alt="Couverture de {{ livre.titre }}">
+                </div>
+                <div class="carte-infos">
+                    <h2 class="carte-titre">{{ livre.titre }}</h2>
+                    <p class="carte-auteur">{{ livre.auteur }}</p>
+                    <p class="carte-genre">{{ livre.genre }}</p>
+                    <div class="carte-bas">
+                        {% if livre.estDisponible() %}
+                            <span class="badge-disponible">Disponible</span>
+                        {% else %}
+                            <span class="badge-indisponible">Indisponible</span>
+                        {% endif %}
+                        <a href="{{ path('app_livre', {id: livre.id}) }}" class="btn-voir">Voir</a>
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <p>Aucun livre trouvé.</p>
+        {% endfor %}
+    </div>
+</main>
+{% endblock %}
